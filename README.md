@@ -5,7 +5,7 @@ Local Homebrew tap for managing the current `easytier-core` binary with `brew se
 ## Install
 
 ```bash
-brew tap wanglei/easytier /Users/wanglei/Documents/Codex/2026-07-03/s/outputs/homebrew-easytier
+brew tap wanglei/easytier /Users/wanglei/Projects/Other/homebrew
 brew install easytier-core
 ```
 
