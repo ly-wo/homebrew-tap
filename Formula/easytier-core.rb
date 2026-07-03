@@ -31,14 +31,14 @@ class EasytierCore < Formula
       Config file:
         #{etc}/easytier/easytier-core.toml
 
-      Start at boot:
-        sudo brew services start easytier-core
+      Start at login:
+        brew services start easytier-core
 
       Restart:
-        sudo brew services restart easytier-core
+        brew services restart easytier-core
 
       Stop:
-        sudo brew services stop easytier-core
+        brew services stop easytier-core
 
       Logs:
         #{var}/log/easytier/easytier-core.stdout.log
@@ -55,7 +55,6 @@ class EasytierCore < Formula
       "--console-log-level", "info",
     ]
     keep_alive true
-    require_root true
     log_path var/"log/easytier/easytier-core.stdout.log"
     error_log_path var/"log/easytier/easytier-core.stderr.log"
   end

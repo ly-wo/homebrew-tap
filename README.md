@@ -30,9 +30,12 @@ The service runs:
 ## Service commands
 
 ```bash
-sudo brew services start easytier-core
-sudo brew services restart easytier-core
-sudo brew services stop easytier-core
-sudo brew services info easytier-core
+brew services start easytier-core
+brew services restart easytier-core
+brew services stop easytier-core
+brew services info easytier-core
 brew services list
 ```
+
+This starts `easytier-core` as a user LaunchAgent at login. For a root LaunchDaemon at system boot,
+keep using `/Library/LaunchDaemons/easytier.core.plist` or run `sudo brew services start easytier-core`.
