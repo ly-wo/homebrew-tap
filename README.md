@@ -1,28 +1,31 @@
-# homebrew-easytier
+# homebrew-tap
 
-Local Homebrew tap for managing the current `easytier-core` binary with `brew services`.
+Homebrew tap for installing `easytier-core` from official EasyTier macOS release binaries and managing it with `brew services`.
 
 ## Install
 
 ```bash
-brew tap wanglei/easytier /Users/wanglei/Projects/Other/homebrew
+brew tap ly-wo/tap
 brew install easytier-core
+brew install --cask easytier-gui
 ```
+
+`easytier-core` is the Homebrew service wrapper. `easytier-gui` installs the macOS GUI app.
 
 ## Configure
 
-Edit:
+Edit the default config file:
 
 ```bash
-sudo vi /usr/local/etc/easytier/easytier-core.toml
+sudo vi "$(brew --prefix)/etc/easytier/easytier-core.toml"
 ```
 
-The service runs:
+The service loads every `.toml` file from `$(brew --prefix)/etc/easytier` and runs:
 
 ```bash
-/usr/local/opt/easytier-core/bin/easytier-core \
-  --config-file /usr/local/etc/easytier/easytier-core.toml \
-  --file-log-dir /usr/local/var/log/easytier \
+"$(brew --prefix)/opt/easytier-core/bin/easytier-core" \
+  --config-dir "$(brew --prefix)/etc/easytier" \
+  --file-log-dir "$(brew --prefix)/var/log/easytier" \
   --file-log-level info \
   --console-log-level info
 ```
@@ -34,5 +37,16 @@ sudo brew services start easytier-core
 sudo brew services restart easytier-core
 sudo brew services stop easytier-core
 sudo brew services info easytier-core
-brew services list
+sudo brew services list
+```
+
+## Cleanup
+
+If the service was previously started without `sudo`, remove the stale user LaunchAgent before using the root service:
+
+```bash
+brew services stop easytier-core
+launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/homebrew.mxcl.easytier-core.plist
+rm ~/Library/LaunchAgents/homebrew.mxcl.easytier-core.plist
+sudo brew services restart easytier-core
 ```
