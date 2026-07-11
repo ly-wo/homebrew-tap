@@ -37,6 +37,16 @@ CASKS = [
       intel: ->(version) { "rubick-#{version}-x64.dmg" },
     },
   },
+  {
+    name:        "tiny-rdm",
+    repo:        "tiny-craft/tiny-rdm",
+    path:        "Casks/tiny-rdm.rb",
+    tag_pattern: /\Av(?<version>\d+(?:\.\d+)+)\z/,
+    assets:      {
+      arm:   ->(version) { "TinyRDM_#{version}_mac_arm64.dmg" },
+      intel: ->(version) { "TinyRDM_#{version}_mac_intel.dmg" },
+    },
+  },
 ].freeze
 
 def request_json(uri)
