@@ -1,6 +1,6 @@
 # homebrew-tap
 
-Homebrew tap for installing `easytier-core` from official EasyTier macOS release binaries and managing it with `brew services`.
+Homebrew tap for EasyTier and selected macOS desktop applications.
 
 ## Install
 
@@ -8,9 +8,14 @@ Homebrew tap for installing `easytier-core` from official EasyTier macOS release
 brew tap ly-wo/tap
 brew install easytier-core
 brew install --cask easytier-gui
+brew install --cask dms
+brew install --cask pakeplus
+brew install --cask ztools
+brew install --cask rubick
 ```
 
-`easytier-core` is the Homebrew service wrapper. `easytier-gui` installs the macOS GUI app.
+`easytier-core` is the Homebrew service wrapper. The casks install EasyTier GUI,
+Alibaba Cloud DMS, PakePlus, ZTools, and rubick.
 
 ## Configure
 
