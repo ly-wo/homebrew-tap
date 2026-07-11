@@ -20,15 +20,24 @@ class EasytierCore < Formula
   end
 
   def install
-    core = if (buildpath/"easytier-core").exist?
-      buildpath/"easytier-core"
-    else
-      Dir["easytier-macos-*/easytier-core"].first
+    binaries = %w[
+      easytier-core
+      easytier-cli
+      easytier-web
+      easytier-web-embed
+    ].map do |binary|
+      path = if (buildpath/binary).exist?
+        buildpath/binary
+      else
+        Dir["easytier-macos-*/#{binary}"].first
+      end
+
+      odie "#{binary} binary not found" unless path
+
+      path
     end
 
-    odie "easytier-core binary not found" unless core
-
-    bin.install core
+    bin.install binaries
   end
 
   def post_install
@@ -88,6 +97,8 @@ class EasytierCore < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/easytier-core --version")
+    %w[easytier-core easytier-cli easytier-web easytier-web-embed].each do |binary|
+      assert_match version.to_s, shell_output("#{bin}/#{binary} --version")
+    end
   end
 end
