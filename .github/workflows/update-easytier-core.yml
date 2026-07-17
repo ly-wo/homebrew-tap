@@ -28,6 +28,8 @@ jobs:
         run: |
           ruby scripts/update-easytier-core.rb
           ruby scripts/update-github-casks.rb
+          ruby scripts/update-gvm.rb
+          ruby scripts/update-orbstack.rb
 
       - name: Detect package changes
         id: changes
@@ -42,15 +44,17 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         run: |
           brew tap ly-wo/tap "$GITHUB_WORKSPACE"
-          brew audit --strict --formula ly-wo/tap/easytier-core
-          brew fetch --force --formula ly-wo/tap/easytier-core
-          brew install --formula ly-wo/tap/easytier-core
-          brew test ly-wo/tap/easytier-core
+          for formula in easytier-core gvm; do
+            brew audit --strict --formula "ly-wo/tap/${formula}"
+            brew fetch --force --formula "ly-wo/tap/${formula}"
+            brew install --formula "ly-wo/tap/${formula}"
+            brew test "ly-wo/tap/${formula}"
+          done
 
       - name: Validate casks
         if: steps.changes.outputs.changed == 'true'
         run: |
-          for cask in easytier-gui dms pakeplus ztools rubick tiny-rdm rustdesk; do
+          for cask in easytier-gui dms pakeplus ztools rubick tiny-rdm rustdesk orbstack; do
             brew audit --strict --cask "ly-wo/tap/${cask}"
             brew fetch --force --cask "ly-wo/tap/${cask}"
           done

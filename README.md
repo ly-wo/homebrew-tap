@@ -1,12 +1,13 @@
 # homebrew-tap
 
-Homebrew tap for EasyTier and selected macOS desktop applications.
+Homebrew tap for EasyTier, developer tools, and selected macOS desktop applications.
 
 ## Install
 
 ```bash
 brew tap ly-wo/tap
 brew install easytier-core
+brew install gvm
 brew install --cask easytier-gui
 brew install --cask dms
 brew install --cask pakeplus
@@ -14,10 +15,21 @@ brew install --cask ztools
 brew install --cask rubick
 brew install --cask tiny-rdm
 brew install --cask rustdesk
+brew install --cask orbstack
 ```
 
-`easytier-core` is the Homebrew service wrapper. The casks install EasyTier GUI,
-Alibaba Cloud DMS, PakePlus, ZTools, rubick, Tiny RDM, and RustDesk.
+`easytier-core` is the Homebrew service wrapper, and `gvm` manages Go versions.
+The casks install EasyTier GUI, Alibaba Cloud DMS, PakePlus, ZTools, rubick,
+Tiny RDM, RustDesk, and OrbStack.
+
+## GVM shell setup
+
+Add the following line to `~/.zshrc` or the appropriate shell profile:
+
+```bash
+[[ -s "$(brew --prefix)/var/gvm/scripts/gvm" ]] && \
+  source "$(brew --prefix)/var/gvm/scripts/gvm"
+```
 
 ## Configure
 
