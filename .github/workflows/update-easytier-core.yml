@@ -29,6 +29,7 @@ jobs:
           ruby scripts/update-easytier-core.rb
           ruby scripts/update-github-casks.rb
           ruby scripts/update-gvm.rb
+          ruby scripts/update-nvm.rb
           ruby scripts/update-orbstack.rb
 
       - name: Detect package changes
@@ -44,7 +45,7 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         run: |
           brew tap ly-wo/tap "$GITHUB_WORKSPACE"
-          for formula in easytier-core gvm; do
+          for formula in easytier-core gvm nvm; do
             brew audit --strict --formula "ly-wo/tap/${formula}"
             brew fetch --force --formula "ly-wo/tap/${formula}"
             brew install --formula "ly-wo/tap/${formula}"

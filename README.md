@@ -8,6 +8,7 @@ Homebrew tap for EasyTier, developer tools, and selected macOS desktop applicati
 brew tap ly-wo/tap
 brew install easytier-core
 brew install gvm
+brew install nvm
 brew install --cask easytier-gui
 brew install --cask dms
 brew install --cask pakeplus
@@ -18,9 +19,9 @@ brew install --cask rustdesk
 brew install --cask orbstack
 ```
 
-`easytier-core` is the Homebrew service wrapper, and `gvm` manages Go versions.
-The casks install EasyTier GUI, Alibaba Cloud DMS, PakePlus, ZTools, rubick,
-Tiny RDM, RustDesk, and OrbStack.
+`easytier-core` is the Homebrew service wrapper, `gvm` manages Go versions, and
+`nvm` manages Node.js versions. The casks install EasyTier GUI, Alibaba Cloud
+DMS, PakePlus, ZTools, rubick, Tiny RDM, RustDesk, and OrbStack.
 
 ## GVM shell setup
 
@@ -29,6 +30,19 @@ Add the following line to `~/.zshrc` or the appropriate shell profile:
 ```bash
 [[ -s "$(brew --prefix)/var/gvm/scripts/gvm" ]] && \
   source "$(brew --prefix)/var/gvm/scripts/gvm"
+```
+
+## NVM shell setup
+
+Create NVM's working directory and add the initialization to your shell profile:
+
+```bash
+mkdir -p "$HOME/.nvm"
+export NVM_DIR="$HOME/.nvm"
+[[ -s "$(brew --prefix)/opt/nvm/nvm.sh" ]] && \
+  source "$(brew --prefix)/opt/nvm/nvm.sh"
+[[ -s "$(brew --prefix)/opt/nvm/etc/bash_completion.d/nvm" ]] && \
+  source "$(brew --prefix)/opt/nvm/etc/bash_completion.d/nvm"
 ```
 
 ## Configure
