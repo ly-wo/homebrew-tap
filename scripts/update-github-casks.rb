@@ -47,6 +47,16 @@ CASKS = [
       intel: ->(version) { "TinyRDM_#{version}_mac_intel.dmg" },
     },
   },
+  {
+    name:        "rustdesk",
+    repo:        "rustdesk/rustdesk",
+    path:        "Casks/rustdesk.rb",
+    tag_pattern: /\A(?<version>\d+(?:\.\d+)+)\z/,
+    assets:      {
+      arm:   ->(version) { "rustdesk-#{version}-aarch64.dmg" },
+      intel: ->(version) { "rustdesk-#{version}-x86_64.dmg" },
+    },
+  },
 ].freeze
 
 def request_json(uri)

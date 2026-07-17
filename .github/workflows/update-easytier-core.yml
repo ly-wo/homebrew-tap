@@ -50,7 +50,7 @@ jobs:
       - name: Validate casks
         if: steps.changes.outputs.changed == 'true'
         run: |
-          for cask in easytier-gui dms pakeplus ztools rubick tiny-rdm; do
+          for cask in easytier-gui dms pakeplus ztools rubick tiny-rdm rustdesk; do
             brew audit --strict --cask "ly-wo/tap/${cask}"
             brew fetch --force --cask "ly-wo/tap/${cask}"
           done

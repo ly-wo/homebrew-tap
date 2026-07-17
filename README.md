@@ -13,10 +13,11 @@ brew install --cask pakeplus
 brew install --cask ztools
 brew install --cask rubick
 brew install --cask tiny-rdm
+brew install --cask rustdesk
 ```
 
 `easytier-core` is the Homebrew service wrapper. The casks install EasyTier GUI,
-Alibaba Cloud DMS, PakePlus, ZTools, rubick, and Tiny RDM.
+Alibaba Cloud DMS, PakePlus, ZTools, rubick, Tiny RDM, and RustDesk.
 
 ## Configure
 
