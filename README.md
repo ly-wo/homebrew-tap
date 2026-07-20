@@ -8,6 +8,7 @@ Homebrew tap for EasyTier, developer tools, and selected macOS desktop applicati
 brew tap ly-wo/tap
 brew install easytier-core
 brew install gvm
+brew install k9s
 brew install nvm
 brew install --cask easytier-gui
 brew install --cask dms
@@ -19,9 +20,10 @@ brew install --cask rustdesk
 brew install --cask orbstack
 ```
 
-`easytier-core` is the Homebrew service wrapper, `gvm` manages Go versions, and
-`nvm` manages Node.js versions. The casks install EasyTier GUI, Alibaba Cloud
-DMS, PakePlus, ZTools, rubick, Tiny RDM, RustDesk, and OrbStack.
+`easytier-core` is the Homebrew service wrapper, `gvm` manages Go versions,
+`k9s` manages Kubernetes clusters, and `nvm` manages Node.js versions. The casks
+install EasyTier GUI, Alibaba Cloud DMS, PakePlus, ZTools, rubick, Tiny RDM,
+RustDesk, and OrbStack.
 
 ## GVM shell setup
 
