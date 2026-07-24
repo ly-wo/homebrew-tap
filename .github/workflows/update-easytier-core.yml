@@ -27,6 +27,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           ruby scripts/update-easytier-core.rb
+          ruby scripts/update-comfy.rb
+          ruby scripts/update-cosbrowser.rb
           ruby scripts/update-github-casks.rb
           ruby scripts/update-gvm.rb
           ruby scripts/update-k9s.rb
@@ -56,7 +58,7 @@ jobs:
       - name: Validate casks
         if: steps.changes.outputs.changed == 'true'
         run: |
-          for cask in easytier-gui dms pakeplus ztools rubick tiny-rdm rustdesk orbstack; do
+          for cask in easytier-gui dms pakeplus ztools rubick tiny-rdm rustdesk orbstack comfy cosbrowser; do
             brew audit --strict --cask "ly-wo/tap/${cask}"
             brew fetch --force --cask "ly-wo/tap/${cask}"
           done
