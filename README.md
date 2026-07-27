@@ -20,12 +20,17 @@ brew install --cask rustdesk
 brew install --cask orbstack
 brew install --cask comfy
 brew install --cask cosbrowser
+brew install --cask iflytek-ime
+brew install --cask wechatwork
+brew install --cask wechat
+brew install --cask qq
 ```
 
 `easytier-core` is the Homebrew service wrapper, `gvm` manages Go versions,
 `k9s` manages Kubernetes clusters, and `nvm` manages Node.js versions. The casks
 install EasyTier GUI, Alibaba Cloud DMS, PakePlus, ZTools, rubick, Tiny RDM,
-RustDesk, OrbStack, Comfy Desktop, and COSBrowser.
+RustDesk, OrbStack, Comfy Desktop, COSBrowser, iFlytek Input Method, WeCom,
+WeChat, and QQ.
 
 ## GVM shell setup
 
