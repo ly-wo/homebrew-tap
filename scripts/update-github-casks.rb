@@ -57,9 +57,19 @@ CASKS = [
       intel: ->(version) { "rustdesk-#{version}-x86_64.dmg" },
     },
   },
+  {
+    name:        "unihub",
+    repo:        "t8y2/unihub",
+    path:        "Casks/unihub.rb",
+    tag_pattern: /\Av(?<version>\d+(?:\.\d+)+)\z/,
+    assets:      {
+      arm:   ->(version) { "unihub-#{version}-arm64.dmg" },
+      intel: ->(version) { "unihub-#{version}-x64.dmg" },
+    },
+  },
 ].freeze
 
-def request_json(uri)
+def github_casks_request_json(uri)
   request = Net::HTTP::Get.new(uri)
   request["Accept"] = "application/vnd.github+json"
   request["User-Agent"] = "homebrew-tap-updater"
@@ -76,7 +86,7 @@ def request_json(uri)
   abort "GitHub API request failed: #{response.code} #{response.message}\n#{response.body}"
 end
 
-def download_sha256(url, redirects = 10)
+def github_casks_download_sha256(url, redirects = 10)
   abort "Too many redirects while downloading #{url}" if redirects <= 0
 
   uri = URI(url)
@@ -87,7 +97,7 @@ def download_sha256(url, redirects = 10)
     http.request(request) do |response|
       case response
       when Net::HTTPRedirection
-        return download_sha256(URI.join(url, response["location"]).to_s, redirects - 1)
+        return github_casks_download_sha256(URI.join(url, response["location"]).to_s, redirects - 1)
       when Net::HTTPSuccess
         digest = Digest::SHA256.new
         response.read_body { |chunk| digest.update(chunk) }
@@ -99,15 +109,15 @@ def download_sha256(url, redirects = 10)
   end
 end
 
-def asset_sha256(asset)
+def github_cask_asset_sha256(asset)
   digest = asset["digest"]
   return digest.delete_prefix("sha256:") if digest&.start_with?("sha256:")
 
-  download_sha256(asset.fetch("browser_download_url"))
+  github_casks_download_sha256(asset.fetch("browser_download_url"))
 end
 
-def update_cask(config)
-  release = request_json(URI("https://api.github.com/repos/#{config.fetch(:repo)}/releases/latest"))
+def update_github_cask(config)
+  release = github_casks_request_json(URI("https://api.github.com/repos/#{config.fetch(:repo)}/releases/latest"))
   tag = release.fetch("tag_name")
   match = config.fetch(:tag_pattern).match(tag)
   abort "Unexpected #{config.fetch(:name)} release tag: #{tag}" unless match
@@ -119,7 +129,7 @@ def update_cask(config)
     asset = assets[name]
     abort "Missing #{config.fetch(:name)} release asset: #{name}" unless asset
 
-    [arch, asset_sha256(asset)]
+    [arch, github_cask_asset_sha256(asset)]
   end
 
   path = config.fetch(:path)
@@ -144,4 +154,4 @@ def update_cask(config)
   end
 end
 
-CASKS.each { |config| update_cask(config) }
+CASKS.each { |config| update_github_cask(config) }

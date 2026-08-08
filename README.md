@@ -24,13 +24,14 @@ brew install --cask iflytek-ime
 brew install --cask wechatwork
 brew install --cask wechat
 brew install --cask qq
+brew install --cask unihub
 ```
 
 `easytier-core` is the Homebrew service wrapper, `gvm` manages Go versions,
 `k9s` manages Kubernetes clusters, and `nvm` manages Node.js versions. The casks
 install EasyTier GUI, Alibaba Cloud DMS, PakePlus, ZTools, rubick, Tiny RDM,
 RustDesk, OrbStack, Comfy Desktop, COSBrowser, iFlytek Input Method, WeCom,
-WeChat, and QQ.
+WeChat, QQ, and UniHub.
 
 ## GVM shell setup
 
