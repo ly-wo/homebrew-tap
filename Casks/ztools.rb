@@ -1,9 +1,9 @@
 cask "ztools" do
   arch arm: "arm64", intel: "x64"
 
-  version "3.0.2"
-  sha256 arm:   "532c1bfda71a1845d0f6b6f8cf03f8457bbd258c8303d0a8c6a57cc09ada748c",
-         intel: "8e928414c780e259a5167dbe200e90b9644d7f4913cad10873d9a66ba55e9928"
+  version "3.1.0"
+  sha256 arm:   "642471a3a195a7ebac4bf89d2413454d151382ef9addb40c6a66eecef322eb59",
+         intel: "3e40630611ceb79fb4d94b1431b4bcbaf43533692f22beac03b114640f088d8c"
 
   url "https://github.com/ZToolsCenter/ZTools/releases/download/v#{version}/ZTools-#{version}-mac-#{arch}.dmg"
   name "ZTools"
