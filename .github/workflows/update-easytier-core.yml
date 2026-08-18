@@ -60,7 +60,7 @@ jobs:
       - name: Validate casks
         if: steps.changes.outputs.changed == 'true'
         run: |
-          for cask in easytier-gui dms pakeplus ztools rubick tiny-rdm rustdesk orbstack comfy cosbrowser iflytek-ime wechatwork wechat qq unihub; do
+          for cask in easytier-gui dms pakeplus ztools rubick tiny-rdm rustdesk orbstack comfy cosbrowser iflytek-ime wechatwork wechat qq unihub unsloth; do
             brew audit --strict --cask "ly-wo/tap/${cask}"
             brew fetch --force --cask "ly-wo/tap/${cask}"
           done

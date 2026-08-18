@@ -67,6 +67,15 @@ CASKS = [
       intel: ->(version) { "unihub-#{version}-x64.dmg" },
     },
   },
+  {
+    name:        "unsloth",
+    repo:        "unslothai/unsloth",
+    path:        "Casks/unsloth.rb",
+    tag_pattern: /\Av(?<version>\d+(?:\.\d+)+-beta)\z/,
+    assets:      {
+      arm: ->(version) { "Unsloth-Desktop-#{version.tr(".-", "_")}-MacOS.dmg" },
+    },
+  },
 ].freeze
 
 def github_casks_request_json(uri)
@@ -135,16 +144,19 @@ def update_github_cask(config)
   path = config.fetch(:path)
   source = File.read(path)
   version_pattern = /^  version "[^"]+"$/
-  sha_pattern = /^  sha256 arm:\s+"[a-f0-9]{64}",\n\s+intel: "[a-f0-9]{64}"$/
+  if shas.one?
+    sha_pattern = /^  sha256 "[a-f0-9]{64}"$/
+    sha_replacement = %Q(  sha256 "#{shas.values.first}")
+  else
+    sha_pattern = /^  sha256 arm:\s+"[a-f0-9]{64}",\n\s+intel: "[a-f0-9]{64}"$/
+    sha_replacement = %Q(  sha256 arm:   "#{shas.fetch(:arm)}",\n         intel: "#{shas.fetch(:intel)}")
+  end
 
   abort "Could not find version in #{path}" unless source.match?(version_pattern)
-  abort "Could not find architecture checksums in #{path}" unless source.match?(sha_pattern)
+  abort "Could not find checksums in #{path}" unless source.match?(sha_pattern)
 
   updated = source.sub(version_pattern, %Q(  version "#{version}"))
-  updated = updated.sub(
-    sha_pattern,
-    %Q(  sha256 arm:   "#{shas.fetch(:arm)}",\n         intel: "#{shas.fetch(:intel)}"),
-  )
+  updated = updated.sub(sha_pattern, sha_replacement)
 
   if updated == source
     puts "#{config.fetch(:name)} is already up to date at #{tag}."
