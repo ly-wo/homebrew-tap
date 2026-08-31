@@ -73,7 +73,7 @@ CASKS = [
     path:        "Casks/unsloth.rb",
     tag_pattern: /\Av(?<version>\d+(?:\.\d+)+-beta)\z/,
     assets:      {
-      arm: ->(version) { "Unsloth-Desktop-#{version.tr(".-", "_")}-MacOS.dmg" },
+      arm: ->(_version) { "Unsloth-Desktop-MacOS.dmg" },
     },
   },
 ].freeze
@@ -166,4 +166,4 @@ def update_github_cask(config)
   end
 end
 
-CASKS.each { |config| update_github_cask(config) }
+CASKS.each { |config| update_github_cask(config) } if $PROGRAM_NAME == __FILE__

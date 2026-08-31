@@ -1,8 +1,8 @@
 cask "unsloth" do
-  version "0.1.801-beta"
-  sha256 "9d2156a6d80b540a501bba188318c8654ed1610fb49dd0a778931fa623dc961a"
+  version "0.1.804-beta"
+  sha256 "0e1cd3a72406de160e1c89c87ae03c2e17c1ba697876c2ed521566fabae5278f"
 
-  url "https://github.com/unslothai/unsloth/releases/download/v#{version}/Unsloth-Desktop-#{version.tr(".-", "_")}-MacOS.dmg"
+  url "https://github.com/unslothai/unsloth/releases/download/v#{version}/Unsloth-Desktop-MacOS.dmg"
   name "Unsloth"
   name "Unsloth Desktop"
   desc "Run and train AI models locally"
