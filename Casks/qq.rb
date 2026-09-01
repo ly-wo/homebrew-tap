@@ -10,7 +10,7 @@ cask "qq" do
 
   livecheck do
     url "https://im.qq.com/proxy/domain/cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/pcConfig.json"
-    regex(%r{/QQNT/(\d+(?:\.\d+)+)/release/(\h+)/QQ[._-]v?(\d+(?:[._]\d+)+)\.dmg}i)
+    regex(%r{/QQNTV2/(\d+(?:\.\d+)+)/release/(\h+)/QQ[._-]v?(\d+(?:[._]\d+)+)\.dmg}i)
     strategy :json do |json, regex|
       match = json.dig("macOS", "downloadUrl")&.match(regex)
       next if match.blank?

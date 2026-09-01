@@ -16,6 +16,7 @@ WECHATWORK_LATEST_URLS = {
 }.freeze
 QQ_PATH = "Casks/qq.rb"
 QQ_CONFIG = "https://im.qq.com/proxy/domain/cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/pcConfig.json"
+QQ_URL_PATTERN = %r{/QQNTV2/(?<release>\d+(?:\.\d+)+)/release/(?<hash>[a-f0-9]+)/QQ_(?<version>\d+(?:[._]\d+)+)\.dmg}i
 
 def request(uri)
   request = Net::HTTP::Get.new(uri)
@@ -142,11 +143,14 @@ def update_wechatwork
   puts "Updated wechatwork to #{latest_versions.inspect}."
 end
 
+def qq_download_url(url)
+  url.sub("/QQNTV2/", "/QQNT/")
+end
+
 def update_qq
   json = JSON.parse(request_body(QQ_CONFIG))
   download_url = json.dig("macOS", "downloadUrl")
-  url_pattern = %r{/QQNT/(?<release>\d+(?:\.\d+)+)/release/(?<hash>[a-f0-9]+)/QQ_(?<version>\d+(?:[._]\d+)+)\.dmg}i
-  match = url_pattern.match(download_url.to_s)
+  match = QQ_URL_PATTERN.match(download_url.to_s)
   abort "Latest QQ release not found" unless match
 
   version = "#{match[:version]},#{match[:release]},#{match[:hash]}"
@@ -160,7 +164,7 @@ def update_qq
     return
   end
 
-  sha256 = download_sha256(download_url)
+  sha256 = download_sha256(qq_download_url(download_url))
   sha_pattern = /^  sha256 "[a-f0-9]{64}"$/
   abort "Could not find QQ checksum in #{QQ_PATH}" unless source.match?(sha_pattern)
 
@@ -170,6 +174,8 @@ def update_qq
   puts "Updated qq to #{version}."
 end
 
-update_wechat
-update_wechatwork
-update_qq
+if $PROGRAM_NAME == __FILE__
+  update_wechat
+  update_wechatwork
+  update_qq
+end
