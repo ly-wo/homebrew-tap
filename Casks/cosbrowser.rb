@@ -1,9 +1,9 @@
 cask "cosbrowser" do
   arch arm: "-arm64", intel: ""
 
-  version "2.12.2"
-  sha256 arm:   "b8f20bf471f7c6394f15a0972ba9ca9f4dd724f9c4e4cfeec4556b1a95fb3a06",
-         intel: "eaacbb8baccb4efd1ed91ff80721948ffb05bf444103b64f7d28eb80da71e3d3"
+  version "2.13.1"
+  sha256 arm:   "00c4dc1dc939da6ca198b909d38761d606f056063df72ca7de244a4cbe089970",
+         intel: "7ac3ee97807d7f8a1c0914369b3b0177376b9149b8c437c54761c48cae6c115f"
 
   url "https://cosbrowser-1253960454.cos.ap-shanghai.myqcloud.com/releases/cosbrowser-#{version}#{arch}.dmg",
       verified: "cosbrowser-1253960454.cos.ap-shanghai.myqcloud.com/releases/"
