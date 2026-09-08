@@ -6,6 +6,7 @@ require "json"
 require "net/http"
 require "rexml/document"
 require "uri"
+require_relative "../lib/qq_download"
 
 WECHAT_PATH = "Casks/wechat.rb"
 WECHAT_FEED = "https://dldir1.qq.com/weixin/mac/mac-release.xml"
@@ -16,9 +17,11 @@ WECHATWORK_LATEST_URLS = {
 }.freeze
 QQ_PATH = "Casks/qq.rb"
 QQ_CONFIG = "https://im.qq.com/proxy/domain/cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/pcConfig.json"
-QQ_URL_PATTERN = %r{/QQNTV2/(?<release>\d+(?:\.\d+)+)/release/(?<hash>[a-f0-9]+)/QQ_(?<version>\d+(?:[._]\d+)+)\.dmg}i
+QQ_URL_PATTERN = %r{
+  /QQNT(?:V\d+)?/(?<release>\d+(?:\.\d+)+)/release/(?<hash>[a-f0-9]+)/QQ_(?<version>\d+(?:[._]\d+)+)\.dmg\z
+}ix
 
-def request(uri)
+def tencent_request(uri)
   request = Net::HTTP::Get.new(uri)
   request["User-Agent"] = "homebrew-tap-updater"
 
@@ -28,13 +31,13 @@ def request(uri)
 end
 
 def request_body(url)
-  response = request(URI(url))
+  response = tencent_request(URI(url))
   abort "Request failed for #{url}: #{response.code} #{response.message}" unless response.is_a?(Net::HTTPSuccess)
 
   response.body
 end
 
-def download_sha256(url, redirects = 10)
+def tencent_download_sha256(url, redirects = 10)
   abort "Too many redirects while downloading #{url}" if redirects <= 0
 
   uri = URI(url)
@@ -45,7 +48,7 @@ def download_sha256(url, redirects = 10)
     http.request(download_request) do |response|
       case response
       when Net::HTTPRedirection
-        return download_sha256(URI.join(url, response.fetch("location")).to_s, redirects - 1)
+        return tencent_download_sha256(URI.join(url, response.fetch("location")).to_s, redirects - 1)
       when Net::HTTPSuccess
         digest = Digest::SHA256.new
         response.read_body { |chunk| digest.update(chunk) }
@@ -86,7 +89,7 @@ def update_wechat
     return
   end
 
-  sha256 = download_sha256(release.fetch(:url))
+  sha256 = tencent_download_sha256(release.fetch(:url))
   sha_pattern = /^  sha256 "[a-f0-9]{64}"$/
   abort "Could not find WeChat checksum in #{WECHAT_PATH}" unless source.match?(sha_pattern)
 
@@ -97,7 +100,7 @@ def update_wechat
 end
 
 def wechatwork_release(url)
-  response = request(URI(url))
+  response = tencent_request(URI(url))
   unless response.is_a?(Net::HTTPRedirection)
     abort "Latest WeCom release request failed: #{response.code} #{response.message}"
   end
@@ -129,7 +132,7 @@ def update_wechatwork
     return
   end
 
-  shas = releases.transform_values { |release| download_sha256(release.fetch(:url)) }
+  shas = releases.transform_values { |release| tencent_download_sha256(release.fetch(:url)) }
   updated = releases.keys.reduce(source) do |contents, architecture|
     block_pattern = /(  on_#{architecture} do\n    version ")[^"]+("\n    sha256 ")[a-f0-9]{64}("\n  end)/
     abort "Could not find WeCom #{architecture} block in #{WECHATWORK_PATH}" unless contents.match?(block_pattern)
@@ -144,7 +147,7 @@ def update_wechatwork
 end
 
 def qq_download_url(url)
-  url.sub("/QQNTV2/", "/QQNT/")
+  QQDownload.signed_url(url)
 end
 
 def update_qq
@@ -154,22 +157,30 @@ def update_qq
   abort "Latest QQ release not found" unless match
 
   version = "#{match[:version]},#{match[:release]},#{match[:hash]}"
+  release_path = "/#{match[:release]}/release/#{match[:hash]}/QQ_#{match[:version]}.dmg"
+  url_template = download_url.sub(release_path,
+                                  "/\#{version.csv.second}/release/\#{version.csv.third}/QQ_\#{version.csv.first}.dmg")
   source = File.read(QQ_PATH)
   version_pattern = /^  version "(?<version>[^"]+)"$/
   current = source.match(version_pattern)
   abort "Could not find QQ version in #{QQ_PATH}" unless current
 
-  if current[:version] == version
+  url_pattern = /^  url "(?<url>[^"]+)"/
+  current_url = source.match(url_pattern)
+  abort "Could not find QQ URL in #{QQ_PATH}" unless current_url
+
+  if current[:version] == version && current_url[:url] == url_template
     puts "qq is already up to date at #{version}."
     return
   end
 
-  sha256 = download_sha256(qq_download_url(download_url))
+  sha256 = tencent_download_sha256(qq_download_url(download_url))
   sha_pattern = /^  sha256 "[a-f0-9]{64}"$/
   abort "Could not find QQ checksum in #{QQ_PATH}" unless source.match?(sha_pattern)
 
   updated = source.sub(version_pattern, %Q(  version "#{version}"))
   updated = updated.sub(sha_pattern, %Q(  sha256 "#{sha256}"))
+  updated = updated.sub(url_pattern) { %Q(  url "#{url_template}") }
   File.write(QQ_PATH, updated)
   puts "Updated qq to #{version}."
 end
