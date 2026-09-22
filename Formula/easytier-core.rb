@@ -40,18 +40,13 @@ class EasytierCore < Formula
     bin.install binaries
   end
 
-  def post_install
-    config_dir = etc/"easytier"
-    config_dir.mkpath
-    (var/"log/easytier").mkpath
-
-    config = config_dir/"easytier-core.toml"
-    return if config.exist?
-
-    config.write <<~TOML
+  post_install_steps do
+    mkdir_p "easytier", base: :etc
+    mkdir_p "log/easytier", base: :var
+    write_file "easytier/easytier-core.toml", <<~TOML, base: :etc, overwrite: false
       # Fill this file before starting the service.
       # Command-line equivalent:
-      #   easytier-core --config-dir #{config_dir}
+      #   easytier-core --config-dir {{etc}}/easytier
       #
       # The service loads every .toml file in this directory. You can also
       # ignore this file and edit the formula service block to use:

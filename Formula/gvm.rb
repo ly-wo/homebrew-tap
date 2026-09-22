@@ -23,25 +23,52 @@ class Gvm < Formula
     SH
   end
 
-  def post_install
-    gvm_root = var/"gvm"
-    gvm_root.mkpath
+  post_install_steps do
+    mkdir_p "gvm", base: :var
 
-    {
-      "bin"     => opt_libexec/"bin",
-      "config"  => opt_libexec/"config",
-      "locales" => opt_libexec/"locales",
-      "scripts" => opt_libexec/"scripts",
-      "VERSION" => opt_libexec/"VERSION",
-    }.each do |name, target|
-      link = gvm_root/name
-      if link.symlink?
-        link.unlink
-      elsif link.exist?
-        opoo "#{link} already exists; leaving it unchanged"
-        next
-      end
-      link.make_symlink(target)
+    remove "{{var}}/gvm/bin", symlink_target_contains: "opt/gvm/"
+    remove "{{var}}/gvm/bin", symlink_target_contains: "Cellar/gvm/"
+    if_path_exists "gvm/bin", base: :var do
+      warn "{{var}}/gvm/bin already exists; leaving it unchanged"
+    end
+    unless_path_exists "gvm/bin", base: :var do
+      symlink "{{opt_prefix}}/libexec/bin", "{{var}}/gvm/bin"
+    end
+
+    remove "{{var}}/gvm/config", symlink_target_contains: "opt/gvm/"
+    remove "{{var}}/gvm/config", symlink_target_contains: "Cellar/gvm/"
+    if_path_exists "gvm/config", base: :var do
+      warn "{{var}}/gvm/config already exists; leaving it unchanged"
+    end
+    unless_path_exists "gvm/config", base: :var do
+      symlink "{{opt_prefix}}/libexec/config", "{{var}}/gvm/config"
+    end
+
+    remove "{{var}}/gvm/locales", symlink_target_contains: "opt/gvm/"
+    remove "{{var}}/gvm/locales", symlink_target_contains: "Cellar/gvm/"
+    if_path_exists "gvm/locales", base: :var do
+      warn "{{var}}/gvm/locales already exists; leaving it unchanged"
+    end
+    unless_path_exists "gvm/locales", base: :var do
+      symlink "{{opt_prefix}}/libexec/locales", "{{var}}/gvm/locales"
+    end
+
+    remove "{{var}}/gvm/scripts", symlink_target_contains: "opt/gvm/"
+    remove "{{var}}/gvm/scripts", symlink_target_contains: "Cellar/gvm/"
+    if_path_exists "gvm/scripts", base: :var do
+      warn "{{var}}/gvm/scripts already exists; leaving it unchanged"
+    end
+    unless_path_exists "gvm/scripts", base: :var do
+      symlink "{{opt_prefix}}/libexec/scripts", "{{var}}/gvm/scripts"
+    end
+
+    remove "{{var}}/gvm/VERSION", symlink_target_contains: "opt/gvm/"
+    remove "{{var}}/gvm/VERSION", symlink_target_contains: "Cellar/gvm/"
+    if_path_exists "gvm/VERSION", base: :var do
+      warn "{{var}}/gvm/VERSION already exists; leaving it unchanged"
+    end
+    unless_path_exists "gvm/VERSION", base: :var do
+      symlink "{{opt_prefix}}/libexec/VERSION", "{{var}}/gvm/VERSION"
     end
   end
 
