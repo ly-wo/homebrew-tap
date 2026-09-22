@@ -1,6 +1,6 @@
 cask "iflytek-ime" do
-  version "1.1.1006"
-  sha256 "5c335335c333730f0de7b4c20ac1f94cbf923873d8701a4845c6254d867e5f51"
+  version "1.1.1008"
+  sha256 "caed7d97a9f8ad50e57cb4c65065a5e59e95a5c23f3304e18c49b2c6552cd178"
 
   url "https://download.voicecloud.cn/200ime/iFlytekIMEInstaller_#{version}_Mac.zip",
       user_agent: :browser
