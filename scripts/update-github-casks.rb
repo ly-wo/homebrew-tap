@@ -76,6 +76,27 @@ CASKS = [
       arm: ->(_version) { "Unsloth-Desktop-MacOS.dmg" },
     },
   },
+  {
+    name:                 "bambu-studio",
+    repo:                 "bambulab/BambuStudio",
+    path:                 "Casks/bambu-studio.rb",
+    tag_pattern:          /\Av(?<version>\d+(?:\.\d+)+)\z/,
+    version_from_release: lambda do |release|
+      versions = release.fetch("assets").filter_map do |asset|
+        match = /\ABambu_Studio_mac-v(\d+(?:\.\d+)+)-(\d+)\.dmg\z/.match(asset.fetch("name"))
+        next unless match
+
+        tag_version = release.fetch("tag_name").delete_prefix("v")
+        (tag_version == match[1]) ? "#{match[1]},#{match[2]}" : "#{match[1]},#{match[2]},#{tag_version}"
+      end
+      abort "Expected exactly one Bambu Studio macOS release asset" unless versions.one?
+
+      versions.fetch(0)
+    end,
+    assets:               {
+      universal: ->(version) { "Bambu_Studio_mac-v#{version.split(",").first(2).join("-")}.dmg" },
+    },
+  },
 ].freeze
 
 def github_casks_request_json(uri)
@@ -131,7 +152,7 @@ def update_github_cask(config)
   match = config.fetch(:tag_pattern).match(tag)
   abort "Unexpected #{config.fetch(:name)} release tag: #{tag}" unless match
 
-  version = match[:version]
+  version = config[:version_from_release]&.call(release) || match[:version]
   assets = release.fetch("assets").to_h { |asset| [asset.fetch("name"), asset] }
   shas = config.fetch(:assets).to_h do |arch, asset_name|
     name = asset_name.call(version)

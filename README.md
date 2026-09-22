@@ -26,13 +26,14 @@ brew install --cask wechat
 brew install --cask qq
 brew install --cask unihub
 brew install --cask unsloth
+brew install --cask ly-wo/tap/bambu-studio
 ```
 
 `easytier-core` is the Homebrew service wrapper, `gvm` manages Go versions,
 `k9s` manages Kubernetes clusters, and `nvm` manages Node.js versions. The casks
 install EasyTier GUI, Alibaba Cloud DMS, PakePlus, ZTools, rubick, Tiny RDM,
 RustDesk, OrbStack, Comfy Desktop, COSBrowser, iFlytek Input Method, WeCom,
-WeChat, QQ, UniHub, and Unsloth.
+WeChat, QQ, UniHub, Unsloth and Bambu Studio.
 
 ## GVM shell setup
 
