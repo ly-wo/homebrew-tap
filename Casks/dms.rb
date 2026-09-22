@@ -2,8 +2,7 @@ cask "dms" do
   version :latest
   sha256 :no_check
 
-  url "https://public-buk.oss-cn-hangzhou.aliyuncs.com/dms/dms-desktop/DMS-mac.dmg",
-      verified: "public-buk.oss-cn-hangzhou.aliyuncs.com/dms/dms-desktop/"
+  url "https://public-buk.oss-cn-hangzhou.aliyuncs.com/dms/dms-desktop/DMS-mac.dmg"
   name "DMS"
   desc "Desktop client for Alibaba Cloud Data Management Service"
   homepage "https://help.aliyun.com/zh/dms/"

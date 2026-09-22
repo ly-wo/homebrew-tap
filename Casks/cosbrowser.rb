@@ -1,12 +1,11 @@
 cask "cosbrowser" do
-  arch arm: "-arm64", intel: ""
+  arch arm: "-arm64"
 
   version "2.13.1"
   sha256 arm:   "00c4dc1dc939da6ca198b909d38761d606f056063df72ca7de244a4cbe089970",
          intel: "7ac3ee97807d7f8a1c0914369b3b0177376b9149b8c437c54761c48cae6c115f"
 
-  url "https://cosbrowser-1253960454.cos.ap-shanghai.myqcloud.com/releases/cosbrowser-#{version}#{arch}.dmg",
-      verified: "cosbrowser-1253960454.cos.ap-shanghai.myqcloud.com/releases/"
+  url "https://cosbrowser-1253960454.cos.ap-shanghai.myqcloud.com/releases/cosbrowser-#{version}#{arch}.dmg"
   name "COSBrowser"
   desc "Desktop client for managing Tencent Cloud Object Storage resources"
   homepage "https://cloud.tencent.com/document/product/436/11366"
