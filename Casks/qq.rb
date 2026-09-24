@@ -1,8 +1,8 @@
 require "#{HOMEBREW_LIBRARY}/Taps/ly-wo/homebrew-tap/lib/qq_download_strategy"
 
 cask "qq" do
-  version "7.0.1_260902_01,9.9.35,110ab2aa"
-  sha256 "9d162f0a2f9afc336b0cff073746f51f27cb19d5aeac486b6d448e1eabe8eafe"
+  version "7.0.2_260924_01,9.9.36,837fcb63"
+  sha256 "d270b78f0b210532637076532a883dc8659851b6daa92451983985ab9f3216f0"
 
   url "https://qqdl.gtimg.cn/qqfile/QQNTV2/#{version.csv.second}/release/#{version.csv.third}/QQ_#{version.csv.first}.dmg",
       using: QQDownloadStrategy
