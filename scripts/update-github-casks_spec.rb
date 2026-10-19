@@ -89,4 +89,16 @@ class UpdateGitHubCasksTest < Minitest::Test
 
     assert_includes source, "/Unsloth-Desktop-MacOS.dmg"
   end
+
+  def test_echobird_uses_arch_specific_macos_release_assets
+    config = CASKS.find { |candidate| candidate.fetch(:name) == "echobird" }
+    raise "Missing EchoBird updater configuration" unless config
+
+    assets = config.fetch(:assets).transform_values { |asset_name| asset_name.call("6.0.2") }
+
+    assert_equal({
+      arm:   "EchoBird_6.0.2_macOS_arm64.dmg",
+      intel: "EchoBird_6.0.2_macOS_x64.dmg",
+    }, assets)
+  end
 end

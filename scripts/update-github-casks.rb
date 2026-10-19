@@ -77,6 +77,16 @@ CASKS = [
     },
   },
   {
+    name:        "echobird",
+    repo:        "edison7009/EchoBird",
+    path:        "Casks/echobird.rb",
+    tag_pattern: /\Av(?<version>\d+(?:\.\d+)+)\z/,
+    assets:      {
+      arm:   ->(version) { "EchoBird_#{version}_macOS_arm64.dmg" },
+      intel: ->(version) { "EchoBird_#{version}_macOS_x64.dmg" },
+    },
+  },
+  {
     name:                 "bambu-studio",
     repo:                 "bambulab/BambuStudio",
     path:                 "Casks/bambu-studio.rb",
