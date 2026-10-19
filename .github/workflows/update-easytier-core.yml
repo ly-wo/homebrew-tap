@@ -63,21 +63,23 @@ jobs:
           fetch_cask() {
             local cask="$1"
             local attempt
+            local max_attempts=3
+            local retry_delay_seconds=10
 
-            for attempt in 1 2 3; do
+            for (( attempt = 1; attempt <= max_attempts; attempt++ )); do
               if brew fetch --force --cask "ly-wo/tap/${cask}"; then
                 return
               fi
-              if [[ "$attempt" -eq 3 ]]; then
+              if [[ "$attempt" -eq "$max_attempts" ]]; then
                 return 1
               fi
 
-              echo "Retrying ${cask} download ($((attempt + 1))/3)..."
-              sleep $((attempt * 10))
+              echo "Retrying ${cask} download ($((attempt + 1))/${max_attempts})..."
+              sleep $((attempt * retry_delay_seconds))
             done
           }
 
-          for cask in easytier-gui dms pakeplus ztools rubick tiny-rdm rustdesk orbstack comfy cosbrowser iflytek-ime wechatwork wechat qq unihub unsloth bambu-studio; do
+          for cask in easytier-gui dms pakeplus ztools rubick tiny-rdm rustdesk orbstack comfy cosbrowser iflytek-ime wechatwork wechat qq unihub unsloth bambu-studio echobird; do
             brew audit --strict --cask "ly-wo/tap/${cask}"
             fetch_cask "$cask"
           done
