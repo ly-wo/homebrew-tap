@@ -1,9 +1,9 @@
 cask "echobird" do
   arch arm: "arm64", intel: "x64"
 
-  version "6.1.0"
-  sha256 arm:   "f4f6462cd6421e2fdb805e5adff9b053bc87723ee9fc7ba59e83a14c92ec43e0",
-         intel: "a6149ca0f79cb40d06ba782475a17394581c6e2146a1dcb159a6c8c965bb060c"
+  version "6.1.3"
+  sha256 arm:   "12f77bd5b732dceacebf3b65cac47e75d0e38fc748b2b425af044d4366c0004a",
+         intel: "524958a6d4ece374f7d898de3813dbb6cf2cd0c4b6094f8a2bbb13b7c4482f2b"
 
   url "https://github.com/edison7009/EchoBird/releases/download/v#{version}/EchoBird_#{version}_macOS_#{arch}.dmg"
   name "EchoBird"
